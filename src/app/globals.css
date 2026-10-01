@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens
+ * - Every text/background pair is at least WCAG AA (4.5:1), UI borders at least 3:1.
+ * - Status is never shown by colour alone: it always has an icon and a text label.
+ * - "High contrast" and the three text sizes are switched with data attributes on <html>.
+ */
+:root {
+  --background: #e4eaf1;
+  --surface: #ffffff;
+  --foreground: #0a1424;
+  --muted: #34425a;
+  --border: #5f6c80;
+  --header: #0a2540;
+  --header-foreground: #ffffff;
+  --shadow-color: rgb(10 37 64 / 0.16);
+  --primary: #0b5a8f;
+  --primary-foreground: #ffffff;
+  --primary-soft: #e1eefa;
+  --danger: #b3261e;
+  --danger-foreground: #ffffff;
+  --danger-soft: #fdecea;
+  --success: #1b6e3c;
+  --success-soft: #e4f4ea;
+  --warning: #7a4200;
+  --warning-soft: #fff1d6;
+  --ring: #0b5a8f;
+}
+
+html[data-contrast="high"] {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --header: #114dd0;
+  --shadow-color: rgb(0 0 0 / 0.3);
+  --foreground: #000000;
+  --muted: #1a1a1a;
+  --border: #000000;
+  --primary: #00355c;
+  --primary-soft: #dcecfa;
+  --danger: #8c0000;
+  --danger-soft: #ffe3e0;
+  --success: #0b4d24;
+  --success-soft: #d9f2e2;
+  --warning: #5c3000;
+  --warning-soft: #ffe8b8;
+  --ring: #000000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-ring: var(--ring);
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
+  --shadow-card: 0 2px 6px var(--shadow-color), 0 1px 2px var(--shadow-color);
+  --shadow-card-lg: 0 8px 24px var(--shadow-color), 0 2px 6px var(--shadow-color);
+  /* System fonts only: no third-party font CDN (DSGVO) and fast first paint. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  /* Headings use a serif stack so they stand apart from the sans-serif body text. */
+  --font-heading: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia,
+    "Times New Roman", serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+html {
+  font-size: 112.5%; /* 18px base for readability */
+}
+html[data-text="large"] {
+  font-size: 137.5%;
+}
+html[data-text="xlarge"] {
+  font-size: 162.5%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  /* Large radio "card" used for travel modes, symptoms and doctors. */
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 4.25rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 1rem;
+    background: var(--surface);
+    box-shadow: 0 1px 3px var(--shadow-color);
+    cursor: pointer;
+  }
+  .choice:hover {
+    background: var(--primary-soft);
+  }
+  .choice:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    box-shadow: inset 0 0 0 2px var(--primary), 0 1px 3px var(--shadow-color);
+  }
+  .choice:has(input:focus-visible) {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .choice .choice-check {
+    display: none;
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+  .choice:has(input:checked) .choice-check {
+    display: inline-block;
+  }
+}
